@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Utrux Search</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+
+    font-family:tahoma;
+
+    background:#020617;
+
+    color:white;
+
+    min-height:100vh;
+
+    padding:30px;
+}
+
+.back-btn{
+
+    position:fixed;
+
+    top:20px;
+    right:20px;
+
+    border:none;
+
+    padding:12px 20px;
+
+    border-radius:12px;
+
+    cursor:pointer;
+
+    background:#2563eb;
+
+    color:white;
+}
+
+.back-btn:hover{
+
+    background:#3b82f6;
+}
+
+.search-header{
+
+    margin-top:70px;
+
+    margin-bottom:30px;
+
+    text-align:center;
+}
+
+.search-header h1{
+
+    margin-bottom:10px;
+}
+
+#images{
+
+    display:flex;
+
+    flex-wrap:wrap;
+
+    justify-content:center;
+
+    gap:10px;
+
+    margin-bottom:40px;
+}
+
+#images img{
+
+    width:220px;
+
+    height:150px;
+
+    object-fit:cover;
+
+    border-radius:12px;
+}
+
+.result{
+
+    background:#111827;
+
+    border-radius:15px;
+
+    padding:20px;
+
+    margin-bottom:15px;
+}
+
+.result a{
+
+    color:#60a5fa;
+
+    font-size:20px;
+
+    text-decoration:none;
+}
+
+.result p{
+
+    margin-top:10px;
+
+    color:#cbd5e1;
+}
+
+.result small{
+
+    display:block;
+
+    margin-top:10px;
+
+    color:#94a3b8;
+}
+
+</style>
+</head>
+<body>
+
+<button class="back-btn" onclick="goBack()">
+🏠 بازگشت
+</button>
+
+<div class="search-header">
+
+    <h1>Utrux Search</h1>
+
+    <h3 id="queryTitle"></h3>
+
+</div>
+
+<div id="images"></div>
+
+<div id="results"></div>
+
+<script>
+
+const API_KEY = "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";
+
+const PEXELS_API_KEY = "LBX1wKWqpXvrZQLXA6xbDaZ376NBhcDZmPAAgBeKyFNF5FtYlpYRBeXw";
+
+const params =
+new URLSearchParams(window.location.search);
+
+const query =
+params.get("q");
+
+document.getElementById("queryTitle")
+.innerText =
+"نتایج جستجو برای: " + query;
+
+function goBack(){
+
+    window.location.href =
+    "https://USERNAME.github.io/REPOSITORY/";
+
+}
+
+async function loadResults(){
+
+    if(!query) return;
+
+    const resultsDiv =
+    document.getElementById("results");
+
+    resultsDiv.innerHTML =
+    "<h2>در حال جستجو...</h2>";
+
+    try{
+
+        const response =
+        await fetch(
+            "https://api.tavily.com/search",
+            {
+                method:"POST",
+
+                headers:{
+                    "Content-Type":"application/json"
+                },
+
+                body:JSON.stringify({
+
+                    api_key:API_KEY,
+
+                    query:query,
+
+                    max_results:10,
+
+                    search_depth:"basic"
+
+                })
+            }
+        );
+
+        const data =
+        await response.json();
+
+        resultsDiv.innerHTML = "";
+
+        if(data.results){
+
+            data.results.forEach(result=>{
+
+                resultsDiv.innerHTML += `
+                <div class="result">
+
+                    <a href="${result.url}"
+                       target="_blank">
+
+                       ${result.title}
+
+                    </a>
+
+                    <p>
+                        ${result.content || ""}
+                    </p>
+
+                    <small>
+                        ${result.url}
+                    </small>
+
+                </div>
+                `;
+            });
+
+        }
+
+    }catch(error){
+
+        console.error(error);
+
+        resultsDiv.innerHTML =
+        "<h2>خطا در دریافت نتایج</h2>";
+    }
+
+}
+
+async function loadImages(){
+
+    if(!query) return;
+
+    try{
+
+        const response =
+        await fetch(
+
+            `https://api.pexels.com/v1/search?query=${encodeURIComponent(query)}&per_page=12`,
+
+            {
+                headers:{
+                    Authorization:
+                    PEXELS_API_KEY
+                }
+            }
+        );
+
+        const data =
+        await response.json();
+
+        const imagesDiv =
+        document.getElementById("images");
+
+        if(data.photos){
+
+            data.photos.forEach(photo=>{
+
+                imagesDiv.innerHTML += `
+                <img
+                src="${photo.src.medium}">
+                `;
+            });
+
+        }
+
+    }catch(error){
+
+        console.error(error);
+    }
+
+}
+
+loadResults();
+loadImages();
+
+</script>
+
+</body>
+</html>
