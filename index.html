@@ -322,6 +322,10 @@ max_results:10
 }
 );
 
+console.log(response.status);
+console.log(response);
+
+    
 const data =
 await response.json();
 
@@ -409,21 +413,13 @@ ${item.url}
 
 });
 
-}
 catch(error){
 
-console.error(error);
+    console.error("ERROR:", error);
 
-results.innerHTML =
-'<div class="error">خطا در اتصال به موتور جستجو</div>';
-
-status.innerText =
-"خطا";
-
-}
-
-}
-
+    resultsDiv.innerHTML =
+    "<h3>خطا در اتصال به API</h3>";
+}  
 </script>
 
 </body>
