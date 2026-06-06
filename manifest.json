@@ -1,0 +1,16 @@
+{
+  "name": "Utrux Browser",
+  "short_name": "Utrux",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#020617",
+  "theme_color": "#2563eb",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "c7896133-3991-4070-a5bb-7db2cc9d612a.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
