@@ -2,10 +2,12 @@
 
 <html lang="fa" dir="rtl">
 <head>
+
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#2563eb">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Utrux Search</title>
 
 <style>
@@ -17,6 +19,7 @@ box-sizing:border-box;
 }
 
 body{
+
 font-family:Tahoma,sans-serif;
 
 background:
@@ -26,68 +29,141 @@ radial-gradient(circle at center,
 #020617 100%);
 
 min-height:100vh;
+
 color:white;
+
 }
 
 .container{
+
 width:100%;
-max-width:none;
+
 padding:20px 40px;
+
 }
-  
+
 .topbar{
+
 display:flex;
+
 justify-content:space-between;
+
 align-items:center;
+
 margin-bottom:30px;
+
 }
 
 .logo{
+
 font-size:34px;
+
 font-weight:bold;
+
 }
 
 .back-btn{
+
 background:#2563eb;
+
 color:white;
+
 border:none;
+
 padding:12px 18px;
+
 border-radius:12px;
+
 cursor:pointer;
+
+font-size:16px;
+
 }
 
 .back-btn:hover{
+
 background:#3b82f6;
+
 }
 
 .search-area{
+
 width:100%;
-padding:10px;
-background:none;
-backdrop-filter:none;
+
+display:flex;
+
+gap:10px;
+
 }
 
-.gsc-control-cse{
-width:100% !important;
+.search-input{
+
+flex:1;
+
+height:55px;
+
+border:none;
+
+outline:none;
+
+border-radius:15px;
+
+padding:0 18px;
+
+font-size:18px;
+
+background:rgba(255,255,255,.1);
+
+color:white;
+
+backdrop-filter:blur(20px);
+
 }
 
-.gsc-search-box{
-width:100% !important;
+.search-input::placeholder{
+
+color:#cbd5e1;
+
 }
 
-.gsib_a{
-width:100% !important;
+.search-btn{
+
+width:120px;
+
+border:none;
+
+border-radius:15px;
+
+background:#2563eb;
+
+color:white;
+
+font-size:16px;
+
+cursor:pointer;
+
 }
 
-.gsc-input-box{
-height:55px !important;
+.search-btn:hover{
+
+background:#3b82f6;
+
+}
+
+.info{
+
+margin-top:25px;
+
+color:#cbd5e1;
+
+font-size:14px;
+
 }
 
 </style>
 
-<script async src="https://cse.google.com/cse.js?cx=d216255c91fde429a"></script>
-
 </head>
+
 <body>
 
 <div class="container">
@@ -110,43 +186,46 @@ onclick="window.location.href='https://utruc.github.io/browser/'">
 
 <div class="search-area">
 
-<div class="search-area">
-
 <input
 id="searchInput"
+class="search-input"
 type="text"
-placeholder="جستجو در گوگل..."
-style="
-width:100%;
-height:55px;
-border:none;
-border-radius:15px;
-padding:0 15px;
-font-size:18px;
-">
+placeholder="جستجو در گوگل...">
 
+<button
+class="search-btn"
+onclick="doSearch()">
+
+جستجو
+
+</button>
+
+</div>
+
+<div class="info">
+نتایج جستجو مستقیماً در گوگل باز می‌شوند.
 </div>
 
 </div>
 
-</div>
 <script>
-if("serviceWorker" in navigator){
-
-  navigator.serviceWorker.register("sw.js");
-
-}
-</script>
-  <script>
 
 const params =
 new URLSearchParams(
 window.location.search
 );
 
-const q = params.get("q");
+const q =
+params.get("q");
+
+const input =
+document.getElementById(
+"searchInput"
+);
 
 if(q){
+
+input.value = q;
 
 window.location.href =
 "https://www.google.com/search?q=" +
@@ -154,25 +233,41 @@ encodeURIComponent(q);
 
 }
 
-document
-.getElementById("searchInput")
-.addEventListener(
+function doSearch(){
+
+const text =
+input.value.trim();
+
+if(!text) return;
+
+window.location.href =
+"https://www.google.com/search?q=" +
+encodeURIComponent(text);
+
+}
+
+input.addEventListener(
 "keydown",
 function(e){
 
 if(e.key==="Enter"){
 
-window.location.href =
-"https://www.google.com/search?q=" +
-encodeURIComponent(
-this.value
-);
+doSearch();
 
 }
 
 }
 );
+
+if("serviceWorker" in navigator){
+
+navigator.serviceWorker.register(
+"sw.js"
+);
+
+}
 
 </script>
+
 </body>
 </html>
