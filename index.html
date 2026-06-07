@@ -110,7 +110,22 @@ onclick="window.location.href='https://utruc.github.io/browser/'">
 
 <div class="search-area">
 
-<div class="gcse-search"></div>
+<div class="search-area">
+
+<input
+id="searchInput"
+type="text"
+placeholder="جستجو در گوگل..."
+style="
+width:100%;
+height:55px;
+border:none;
+border-radius:15px;
+padding:0 15px;
+font-size:18px;
+">
+
+</div>
 
 </div>
 
@@ -121,6 +136,43 @@ if("serviceWorker" in navigator){
   navigator.serviceWorker.register("sw.js");
 
 }
+</script>
+  <script>
+
+const params =
+new URLSearchParams(
+window.location.search
+);
+
+const q = params.get("q");
+
+if(q){
+
+window.location.href =
+"https://www.google.com/search?q=" +
+encodeURIComponent(q);
+
+}
+
+document
+.getElementById("searchInput")
+.addEventListener(
+"keydown",
+function(e){
+
+if(e.key==="Enter"){
+
+window.location.href =
+"https://www.google.com/search?q=" +
+encodeURIComponent(
+this.value
+);
+
+}
+
+}
+);
+
 </script>
 </body>
 </html>
